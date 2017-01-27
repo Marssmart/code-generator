@@ -10,6 +10,7 @@
 
     <properties>
         <guava.version>19.0</guava.version>
+        <commons-lang.version>2.6</commons-lang.version>
     </properties>
 
     <dependencies>
@@ -17,6 +18,12 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>${guava.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>${commons-lang.version}</version>
         </dependency>
     </dependencies>
 

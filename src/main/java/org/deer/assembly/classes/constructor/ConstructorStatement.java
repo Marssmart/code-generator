@@ -40,6 +40,14 @@ public class ConstructorStatement implements Statement {
         return forClass;
     }
 
+    public AccessModifier getAccessModifier() {
+        return accessModifier;
+    }
+
+    public Set<ParameterStatement> getParameterStatements() {
+        return parameterStatements;
+    }
+
     @Override
     public String assemble() {
         return accessModifier.assemble().concat(SPACE).concat(forClass)

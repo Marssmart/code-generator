@@ -22,6 +22,18 @@ public class ParameterStatement implements Statement {
         return this;
     }
 
+    public Type getType() {
+        return type;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public MutabilityModifier getMutabilityModifier() {
+        return mutabilityModifier;
+    }
+
     @Override
     public String assemble() {
         return (mutabilityModifier == null
