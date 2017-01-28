@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.deer.assembly.Statement;
+import org.deer.assembly.annotation.Annotation;
 import org.deer.assembly.modifier.AccessModifier;
 import org.deer.assembly.modifier.MutabilityModifier;
 import org.deer.assembly.modifier.ScopeModifier;
@@ -27,14 +28,21 @@ public class MethodStatement implements Statement {
     private MutabilityModifier mutabilityModifier;
     private AccessModifier accessModifier;
     private final Set<ParameterStatement> parameterStatements;
+    private final Set<Annotation> annotations;
 
     public MethodStatement(final String name) {
         this.name = name;
         this.parameterStatements = new HashSet<>();
+        this.annotations = new HashSet<>();
     }
 
     public MethodStatement addParameter(final ParameterStatement parameterStatement) {
         this.parameterStatements.add(parameterStatement);
+        return this;
+    }
+
+    public MethodStatement addAnnotation(final Annotation annotation) {
+        this.annotations.add(annotation);
         return this;
     }
 
@@ -84,7 +92,7 @@ public class MethodStatement implements Statement {
 
     @Override
     public String assemble() {
-        return accessModifier.assemble().concat(SPACE)
+        return annotationsBlock(annotations).concat(accessModifier.assemble()).concat(SPACE)
                 .concat(scopeModifier.assemble()).concat(SPACE)
                 .concat(STATIC == scopeModifier
                         ? ""
@@ -92,7 +100,8 @@ public class MethodStatement implements Statement {
                 .concat(returnType.assemble()).concat(SPACE)
                 .concat(name)
                 .concat(LRB)
-                .concat(parameterStatements.stream().map(ParameterStatement::assemble).collect(Collectors.joining(COMMASPACE)))
+                .concat(parameterStatements.stream().map(ParameterStatement::assemble)
+                        .collect(Collectors.joining(COMMASPACE)))
                 .concat(RRB).concat(LCB).concat(NL)
                 .concat(RCB);
     }

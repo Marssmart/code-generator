@@ -48,6 +48,8 @@ public class ConstructorStatement implements Statement {
         return parameterStatements;
     }
 
+
+
     @Override
     public String assemble() {
         return accessModifier.assemble().concat(SPACE).concat(forClass)

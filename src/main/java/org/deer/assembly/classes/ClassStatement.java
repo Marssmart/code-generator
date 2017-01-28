@@ -19,6 +19,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.deer.assembly.Statement;
+import org.deer.assembly.annotation.Annotation;
 import org.deer.assembly.classes.attribute.Attribute;
 import org.deer.assembly.classes.constructor.ConstructorStatement;
 import org.deer.assembly.classes.method.MethodStatement;
@@ -38,6 +39,7 @@ public class ClassStatement implements Statement, PackageCollector {
     private final Set<ConstructorStatement> constructorStatements;
     private final Set<MethodStatement> methodStatements;
     private final Set<Attribute> attributes;
+    private final Set<Annotation> annotations;
 
     public ClassStatement(final String className, final PackageStatement _package) {
         this.className = className;
@@ -47,6 +49,7 @@ public class ClassStatement implements Statement, PackageCollector {
         this.constructorStatements = new LinkedHashSet<>();
         this.methodStatements = new LinkedHashSet<>();
         this.attributes = new LinkedHashSet<>();
+        this.annotations = new LinkedHashSet<>();
     }
 
     public ClassStatement accessModifier(final AccessModifier accessModifier) {
@@ -76,9 +79,15 @@ public class ClassStatement implements Statement, PackageCollector {
         return this;
     }
 
+    public ClassStatement addAnnotation(final Annotation annotation) {
+        this.annotations.add(annotation);
+        return this;
+    }
+
     public String assemble() {
         return packageStatement()
                 .concat(importStatements())
+                .concat(annotationsBlock(annotations))
                 .concat(accessModifier.assemble()).concat(SPACE)
                 .concat(mutabilityModifier.assemble()).concat(SPACE)
                 .concat(NAME).concat(SPACE)
